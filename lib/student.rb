@@ -28,12 +28,10 @@ class Student
   end
   def save
     sql = <<-SQL
-      INSERT INTO students (name, grade)
-        VALUES (?, ?)
+    insert into students (name,grade) values(?,?);
     SQL
-
     DB[:conn].execute(sql, self.name, self.grade)
-  end
+    @id = DB[:conn].execute("SELECT MAX(ID) AS LastID FROM students")[0][0]
 
   def self.create(name:, grade:)
     student = Student.new(name, grade)
